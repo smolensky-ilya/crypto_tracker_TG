@@ -61,10 +61,11 @@ class Investments:
 
     def get_info(self):
         try:
-            return pd.read_csv(self.filename).dropna(subset=['token']).groupby('token')[['rub', 'usd']].sum() \
+            return pd.read_csv(self.filename).dropna(subset=['token']).query('actual != "no"') \
+                                             .groupby('token')[[f'{self.config.LOCAL_CURRENCY}', 'usd']].sum() \
                                              .to_dict(orient='index')
         except FileNotFoundError:
-            pd.DataFrame({'token': [], 'date_': [], f'{self.config.LOCAL_CURRENCY}': [], 'usd': [], 'open': []}).\
+            pd.DataFrame({'token': [], 'date_': [], f'{self.config.LOCAL_CURRENCY}': [], 'usd': [], 'actual': []}).\
                 to_csv(self.config.INVESTMENTS_FILE_NAME, index=False)
             self.logging.warning(f"Investments file was successfully created.")
             return pd.DataFrame()
