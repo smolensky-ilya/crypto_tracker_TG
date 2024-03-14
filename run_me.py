@@ -5,8 +5,6 @@ from config import Config
 from time import sleep
 import logging
 
-#TODO: 'open' tab in investments - count for it.
-
 
 def main():
     # INITIALIZE CONFIG AND LOGGING
